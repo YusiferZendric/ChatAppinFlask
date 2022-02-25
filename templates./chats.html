@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Chats!</title>
+    <style>
+        .heading {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .chats{
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+            display: inline;
+        }
+        .user{
+            border: 5px solid black;
+            border-radius: 10px;
+            display: inline;
+            padding: 5px 5px 5px 5px;
+        }
+        .input{
+            width: 98%;
+            height: 5vh;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 5px 5px 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- create a for loop in jinja flask that will show all the values of list main in h1 -->
+    <h1 class="heading">{{room_name}} 😉</h1>
+    
+    <hr>
+    <div class="chats">
+        {% for chat in chats %}
+            <p class="user">{{chat.split("<>:<>")[0]}}</p> <p class="chats">{{ "".join(chat.split("<>:<>")[1:]) }}</p>
+            <hr>
+        {% endfor %}
+    <form action="/chatting" method="POST">
+        <!-- return the {{username}} in a name to the function -->
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="hidden" name="room_name" value="{{room_name}}">
+
+        <input class="input" type="text" name="NewChat" placeholder="enter your message">
+    </form>
+</body>
+</html>
