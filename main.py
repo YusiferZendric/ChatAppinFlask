@@ -1,24 +1,17 @@
-# create a flask minimal template
-
-
 from flask import Flask, redirect, render_template,request,session
 import json
 import random
 app = Flask(__name__)
-# declare the session
+
 app.secret_key = 'my precious'
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# create a function that controls the action of submit button in the form and the route will be /room
-# this function will extract the content of a input whose name is room_name
-
-
 @app.route('/room',methods=['GET','POST'])
 def room():
     if request.method == 'POST':
-        # get the content of the input whose name is room_name
+        
         room_name = request.form['room_name']
         password = request.form['password']
         user_name = request.form['username']
@@ -27,7 +20,6 @@ def room():
             previousRooms = json.loads(f.read())
         if room_name in previousRooms['rooms'].keys():
             if password == previousRooms['rooms'][room_name][1]:
-                # open users.json as read the content
                 with open('templates/users.json', 'r') as f:
                     users = json.loads(f.read())
                 for i,j in users.items():
@@ -42,7 +34,6 @@ def room():
                         else:
                             return "<h1>Wrong User Password! Try again...</h1>"
                 else:
-                    # enter the user_name and user_password in users.json
                     users[user_name] = user_pass
                     with open('templates/users.json', 'w') as f:
                         json.dump(users, f)
@@ -52,7 +43,6 @@ def room():
             else:
                 return "<h1>Wrong Room Password, Try again</h1>"
         else:
-            # write the room_name in the json file of content.json
             previousRooms['rooms'][room_name] = []
             previousRooms['rooms'][room_name].append("".join([str(random.randint(0,9)) for _ in range(20)]))
             previousRooms['rooms'][room_name].append(password)
@@ -70,7 +60,6 @@ def chatting():
             previousRooms = json.loads(f.read())
         if username + "<>:<> " + request.form['NewChat'] not in previousRooms['rooms'][room_name][2]:
             previousRooms['rooms'][room_name][2].append(username + "<>:<> " + request.form['NewChat'])
-        # write the previousRooms in content.json
         with open('templates/content.json', 'w') as f:
             f.write(json.dumps(previousRooms))
         session['random'] = str(random.randint(1,100000))
